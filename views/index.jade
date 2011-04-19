@@ -1,0 +1,9 @@
+h1= title
+p Welcome to #{title}
+br
+p #{data}
+label(for='work[tags]') Tags, comma separated
+form#items-form(action='/', method='post')
+	input(type='hidden', name='work[tID]', value=tID)
+	input(type='text', name='work[tags]', placeholder='E.g. Research, red-neuron, ux', autofocus)
+	input(type='submit', value='Start tracking')

@@ -1,13 +1,12 @@
 
 $("#notice").hide();
 var counter
-var time = {
-	active: false,
-	tags: [],
-	tagsStr: "",
-	time: 0,
-	timeStr: ""
-}
+var time = {active: false,
+						tags: [],
+						tagsStr: "",
+						time: 0,
+						timeStr: ""
+			 		 };
 function makeStr(t){
 	if(t<60) {
 		return t+" sec";
@@ -49,7 +48,7 @@ function startTime() {
 		});
 	}
 	$.post('/work', time, function(data) {
-		console.log(data);
+		time = data;
 	});
 	return false;
 }
@@ -63,4 +62,10 @@ $("#done").click(function() {
 	$.post('/work', time, function(data) {
 		console.log(data);
 	});
+	time = {active: false,
+					tags: [],
+					tagsStr: "",
+					time: 0,
+					timeStr: ""
+				 }
 });

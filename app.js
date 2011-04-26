@@ -44,10 +44,19 @@ app.configure('production', function(){
 	}
 	next();
 }*/
+
+//THROW INTO MODEL!
+//later.
+
 function addData(req, res, next) {
+	console.log(req.body);
+	
 	if (req.body.active=='true') {
+		console.log("calls NOT DONE");
+		
 		var tags = req.body.tags;
 		var objIds = [];
+		
 		for(i=0;i<tags.length;i++) {
 			var thisWork = new work.WorkInstance({ tag: tags[i] });
 			objIds[i] = thisWork._id;
@@ -56,28 +65,37 @@ function addData(req, res, next) {
 				if (err) { req.err = err; }
 			});
 		}
+		req.body.tID = objIds;
+		
 	} else {
-		/*var objIds = req.body.tID;*/
-	}
-	
-	req.body.tID = objIds;
-	next();
-} 
-
-// Routes
-function loadData(req, res, next) {
-	work.WorkInstance.find({}, function(err, docs) {
-		if (!err) console.log('Success!');
-		var tags = []
-		for (i=0;i<docs.length;i++) {
-			tags[i] = docs[i].doc.tag;	
+		console.log("calls DONE!")
+		var objIds = req.body.tID;
+		
+		for (i=0;i<objIds.length;i++) {
+			work.WorkInstance.findById((objIds[i]), function(err, time) {
+				if(!err) {
+					var date = new Date;
+					time.done = true;
+					time.stop = date;
+					time.save(function (err) {
+						console.log("tried to save");
+						console.log(err);
+						if (!err) console.log('Success!');
+						if (err) { req.err = err; }
+					})
+				} else {
+					console.log(err);
+				}
+			})
 		}
-		req.tags = tags;
-		next();
-	});
+		
+	}
+	next();
 }
 
-app.get('/', loadData, function(req, res){
+
+//Routes!
+app.get('/', /*loadData,*/ function(req, res){
   res.render('index', {
     title: app.set('title'),
 		data: ["req.tags"],
@@ -86,7 +104,7 @@ app.get('/', loadData, function(req, res){
   });
 });
 
-app.post('/', addData, loadData, function(req, res) {
+app.post('/', addData, /*loadData,*/	 function(req, res) {
 	res.render('index', {
 		title:  app.set('title'),
 		data: ["req.tags"],

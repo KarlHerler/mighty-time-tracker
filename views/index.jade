@@ -1,5 +1,5 @@
 header
-	div(id="notice")
+	div(id="notice", class="notice")
 		p Tracking: 
 			span(class="tags") You might want to enable javascript
 			span &nbsp;for 
@@ -9,14 +9,27 @@ header
 
 h1= title
 p Welcome to #{title}
-br
-ul
-	- data.forEach(function(item) {
-		li #{item}
-	- })
 
-label(for='work[tags]') Tags, comma separated
 form#items-form(action='/', method='post', onsubmit="startTime(); return false;")
-	input(type='hidden', name='work[tID]', value=tID)
+	label(for='work[tags]') Tags, comma separated
+	//input(type='hidden', name='work[tID]', value=tID)
 	input#tags(type='text', name='work[tags]', placeholder='E.g. Research, red-neuron, ux', autofocus)
 	input#submit(type='submit', value='Start tracking')
+br
+
+table
+	tr
+		th Date
+		th Tag
+		th Time
+	- if (data.length<1) {
+			tr
+				td(colspan=3) Nothing here :(
+	- }
+	- data.forEach(function(item) {
+		- var workData = item.workData
+		tr
+			td #{workData.start.toLocaleDateString()}
+			td #{workData.tag}
+			td #{workData.timeStr}
+	- })

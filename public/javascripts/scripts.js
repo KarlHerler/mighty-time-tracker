@@ -24,6 +24,7 @@ function makeStr(t){
 		}
 	}
 }
+console.log("live")
 function updateTime() {
 	time.time++;
 	time.timeStr = makeStr(time.time);
@@ -48,7 +49,7 @@ function startTime() {
 		});
 	}
 	$.post('/work', time, function(data) {
-		time = data;
+		time = data[0];
 	});
 	return false;
 }

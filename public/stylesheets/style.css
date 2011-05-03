@@ -15,7 +15,7 @@ header {
   text-align: center;
   height: 50px;
 }
-#notice {
+.notice {
   background: #343434;
   border-top: 0;
   float: left;
@@ -31,15 +31,15 @@ header {
   color: #aeaeae;
   font-size: 22px;
 }
-#notice p {
+.notice p {
   margin: 6px;
 }
-#notice .tags,
-#notice .time {
+.notice .tags,
+.notice .time {
   font-weight: bold;
   color: #eee;
 }
-#notice a {
+.notice a {
   padding-left: 20px;
 }
 h1,
@@ -54,4 +54,17 @@ h1 {
 }
 a {
   color: #00b7ff;
+}
+label {
+  margin-right: 10px;
+}
+table {
+  margin-bottom: 10px;
+}
+table th {
+  text-align: left;
+  padding-bottom: 2px;
+}
+table td {
+  padding-right: 50px;
 }

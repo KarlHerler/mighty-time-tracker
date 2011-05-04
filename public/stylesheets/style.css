@@ -2,7 +2,7 @@ html {
   background: #f8f8f8;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ece9e9));
   background: -moz-linear-gradient(top, #fff, #ece9e9);
-  height: 100%;
+  min-height: 100%;
 }
 body {
   padding: 50px;

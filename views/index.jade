@@ -8,7 +8,7 @@ header
 			a#done(href="#done") Done!
 
 h1= title
-p Welcome to #{title}
+p Welcome to #{title}, a simple little app to keep track of time spent working on something for someone.
 
 form#items-form(action='/', method='post', onsubmit="startTime(); return false;")
 	label(for='work[tags]') Tags, comma separated

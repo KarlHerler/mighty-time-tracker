@@ -24,12 +24,13 @@ function makeStr(t){
 		}
 	}
 }
-console.log("live")
+
 function updateTime() {
 	time.time++;
 	time.timeStr = makeStr(time.time);
 	$(".time").html(time.timeStr);
 }
+
 function startTime() {
 	if (time.active==false) {
 		time.active = true;

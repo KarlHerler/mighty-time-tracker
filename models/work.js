@@ -77,6 +77,7 @@ function addData(req, res, next) {
 		}
 		req.body.tID = objIds;
 		
+		next();
 	} else {
 		var objIds = req.body.tID;
 		var workDatas = []
@@ -92,20 +93,20 @@ function addData(req, res, next) {
 																			start: 	new Date(time[i].start),
 																			stop: 	new Date(time[i].stop)
 																		}};
+					var t = (workDatas[i].workData.stop - workDatas[i].workData.start);
+					workDatas[i].workData.timeStr = timeStr(t);
+					workDatas[i].workData.time = t;
 					
 					time[i].save(function (err) {
 						if (!err) console.log('Success!');
 						if (err) { req.err = err; }
 					});
-					console.log(workDatas[i]);
 				} // end for
-				console.log("########")
-				console.log(workDatas);
 				req.newWorkDatas = workDatas;
+				next();
 			} // end if (!err)
 		}); //end find
 	} // end if (req.active)
-	next();
 }
 
 exports.addData = addData;

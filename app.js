@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+require.paths.unshift('./node_modules');
 var express = require('express');
 var work = require('./models/work.js');	//the data model.
 
@@ -34,8 +34,7 @@ app.configure('production', function(){
 
 //Routes!
 app.get('/', work.loadData, function(req, res){
-//		res.send("ffuu")
-  res.render('index', {
+		res.render('index', {
     title: app.set('title'),
 		data: req.workDatas,
 		tracking: true
@@ -50,12 +49,11 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 	})
 })
 app.post('/work', work.addData, function(req, res) {
-	console.log(req);
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
 // Only listen on $ node app.js
 
 if (!module.parent) {
-  app.listen(8000);
+	app.listen(8080);
   console.log("Express server listening on port %d", app.address().port);
 }

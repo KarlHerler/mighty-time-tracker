@@ -61,9 +61,24 @@ $("#done").click(function() {
 	$("#notice").slideUp(200, function() {
 		$("#notice").hide();
 	});
+	
 	$.post('/work', time, function(data) {
-		console.log(data);
+		var d = data[1];
+		var addedWorks = "";
+		for (i=0; i<d.length;i++) {
+			addedWorks = addedWorks+"<tr class='flash'>"
+			var start  = new Date(d[i].workData.start);
+			addedWorks = addedWorks+"<td>"+start.toLocaleDateString()+"</td>";
+			addedWorks = addedWorks+"<td>"+d[i].workData.tag+"</td>";
+			addedWorks = addedWorks+"<td>"+d[i].workData.timeStr+"</td>";
+		}
+		addedWorks = addedWorks + "</tr>";
+		$("#workdata tbody").prepend(addedWorks);
+		/*$("#workdata .flash td").animate({border: 0}, 20000, function() {
+			$(this).parent().removeClass("flash");
+		});*/
 	});
+	
 	time = {active: false,
 					tags: [],
 					tagsStr: "",

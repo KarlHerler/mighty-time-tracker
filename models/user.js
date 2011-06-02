@@ -1,7 +1,6 @@
 var session = require('./session.js')
 
-var user = {
-}
+var user = {}
 
 function valid(u) {
 	//check if user exists
@@ -18,9 +17,8 @@ function valid(u) {
 }
 function signIn(req, res, next) {
 	if (valid(req.body.user)) {
-		console.log('gets here')
-		user = req.body.user;
-		session.create(user);
+		user = {id: 'ohmanohgodohman', name: req.body.user.name} //should be objId
+		req.session.user = user;
 		req.signedIn = true;
 	} else {
 		req.signedIn = false;

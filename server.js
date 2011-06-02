@@ -18,7 +18,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  app.use(express.session({ secret: 'My gosh its a secret token.' }));
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -35,10 +35,12 @@ app.configure('production', function(){
 
 //Routes!
 app.get('/', work.loadData, function(req, res){
+		var uname = (req.session.user===undefined) ? "" : req.session.user.name;
 		res.render('index', {
-    title: app.set('title'),
-		data: req.workDatas,
-		tracking: true
+    	title: app.set('title'),
+			data: req.workDatas,
+			username: uname,
+			tracking: true
   });
 });
 app.post('/', work.addData, work.loadData, function(req, res) {
@@ -57,8 +59,10 @@ app.get('/session', user.validateSession, function(req, res) {
 	})
 });
 app.post('/session', user.signIn, function(req, res) {
-	if (req.signedIn) { res.send("OH HAPPY DAYS!") } else { res.send("FUCK YOU, TRYING TO HACK MY SHIT ARE WE?!")}
-})
+	if (req.signedIn) { 
+		res.redirect('/')
+	} else { res.send("FUCK YOU, TRYING TO HACK MY SHIT ARE WE?!")}
+});
 
 
 // Only listen on $ node app.js

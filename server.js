@@ -32,6 +32,7 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+console.log("OH MY IT'S THE LATEST VERSION")
 
 //Routes!
 app.get('/', work.loadData, function(req, res){

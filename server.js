@@ -5,6 +5,7 @@
 require.paths.unshift('./node_modules');
 var express = require('express');
 var work = require('./models/work.js');	//the data model.
+var user = require('./models/user.js')	//the user model.
 
 var app = module.exports = express.createServer();
 
@@ -40,7 +41,6 @@ app.get('/', work.loadData, function(req, res){
 		tracking: true
   });
 });
-
 app.post('/', work.addData, work.loadData, function(req, res) {
 	res.render('index', {
 		title:  app.set('title'),
@@ -51,9 +51,23 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 app.post('/work', work.addData, function(req, res) {
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
+app.get('/session', user.validateSession, function(req, res) {
+	res.render('session', {
+		title: app.set('title')
+	})
+});
+app.post('/session', user.signIn, function(req, res) {
+	if (req.signedIn) { res.send("OH HAPPY DAYS!") } else { res.send("FUCK YOU, TRYING TO HACK MY SHIT ARE WE?!")}
+})
+
+
 // Only listen on $ node app.js
 
 if (!module.parent) {
-	app.listen(80);
+	if(process.env.NODE_ENV==="development") {
+		app.listen(8000);	
+	} else {
+		app.listen(80);	
+	}
   console.log("Express server listening on port %d", app.address().port);
 }

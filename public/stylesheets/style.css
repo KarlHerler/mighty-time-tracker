@@ -42,6 +42,18 @@ header {
 .notice a {
   padding-left: 20px;
 }
+.user {
+  color: #dfdfdf;
+  position: absolute;
+  top: 0;
+  right: 50px;
+}
+.user a {
+  color: #dfdfdf;
+}
+.user a:hover {
+  color: #aaa;
+}
 h1,
 h2,
 h3 {

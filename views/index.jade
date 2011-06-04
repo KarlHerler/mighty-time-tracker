@@ -49,6 +49,10 @@ table(id="workdata")
 				- }
 		- })
 		tr
+			td #{data[data.length-2].workData.start.toLocaleDateString()}
+			td #{data[data.length-2].workData.tag}
+			td #{data[data.length-2].workData.timeStr}
+		tr
 			td #{data[data.length-1].workData.start.toLocaleDateString()}
 			td #{data[data.length-1].workData.tag}
 			td #{data[data.length-1].workData.timeStr}

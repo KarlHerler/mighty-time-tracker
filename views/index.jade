@@ -47,12 +47,9 @@ table(id="workdata")
 					- cTime = { 'start': workData.start, 'stop': workData.stop }
 					- cTags = [workData.tag];
 				- }
-		- })
-		tr
-			td #{data[data.length-2].workData.start.toLocaleDateString()}
-			td #{data[data.length-2].workData.tag}
-			td #{data[data.length-2].workData.timeStr}
+		- });
+		- if (cTags.length>0) { cTags = cTags.join(', ') +", "+data[data.length-1].workData.tag; }
 		tr
 			td #{data[data.length-1].workData.start.toLocaleDateString()}
-			td #{data[data.length-1].workData.tag}
+			td #{cTags}
 			td #{data[data.length-1].workData.timeStr}

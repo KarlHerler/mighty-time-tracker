@@ -39,7 +39,13 @@ function loadData(req, res, next) {
 	
 	/* Loads all data. */
 	
-	WorkInstance.find({}, ['_id','tag', 'start', 'stop'], {sort:[['stop', -1]]}, function(err, docs) {
+	var filter = {}
+	if(req.params.tag) {
+		console.log("fetching data for tag: "+req.params.tag)
+		filter = {"tag": req.params.tag}
+	}
+	
+	WorkInstance.find(filter, ['_id','tag', 'start', 'stop'], {sort:[['stop', -1]]}, function(err, docs) {
 		if (!err) console.log('Success!');
 		var workDatas = []
 		var workData = {};

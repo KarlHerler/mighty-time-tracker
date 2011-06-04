@@ -49,7 +49,7 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 		data: req.workDatas,
 		tracking: true
 	})
-})
+});
 app.post('/work', work.addData, function(req, res) {
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
@@ -64,6 +64,16 @@ app.post('/session', user.signIn, function(req, res) {
 	} else { res.send("FUCK YOU, TRYING TO HACK MY SHIT ARE WE?!")}
 });
 
+app.get('/favicon.ico', function(req, res){ res.send("") });
+app.get('/:tag', work.loadData, function(req, res) {
+	var uname = (req.session) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+	res.render('index', {
+		title: req.params.tag,
+		data: req.workDatas,
+		username: uname,
+		tracking: true
+	})
+});
 
 // Only listen on $ node app.js
 

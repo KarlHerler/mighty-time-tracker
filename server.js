@@ -32,7 +32,6 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-console.log("OH MY IT'S THE LATEST VERSION");
 
 //Routes!
 app.get('/', work.loadData, function(req, res){
@@ -54,7 +53,7 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 app.post('/work', work.addData, function(req, res) {
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
-app.get('/session', user.validateSession, function(req, res) {
+app.get('/u/session', user.validateSession, function(req, res) {
 	res.render('session', {
 		title: app.set('title')
 	})

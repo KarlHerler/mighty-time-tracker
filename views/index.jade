@@ -48,3 +48,7 @@ table(id="workdata")
 					- cTags = [workData.tag];
 				- }
 		- })
+		tr
+			td #{data[data.length-1].workData.start.toLocaleDateString()}
+			td #{data[data.length-1].workData.tag}
+			td #{data[data.length-1].workData.timeStr}

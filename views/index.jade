@@ -48,8 +48,7 @@ table(id="workdata")
 					- cTags = [workData.tag];
 				- }
 		- });
-		- if (cTags.length>0) { cTags = cTags.join(', ') +", "+data[data.length-1].workData.tag; }
 		tr
 			td #{data[data.length-1].workData.start.toLocaleDateString()}
-			td #{cTags}
+			td #{cTags.join(', ')}
 			td #{data[data.length-1].workData.timeStr}

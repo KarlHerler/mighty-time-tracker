@@ -42,7 +42,10 @@ table(id="workdata")
 					- cTags.push(workData.tag);
 				- } else {
 					td #{data[i-1].workData.start.toLocaleDateString()}
-					td #{cTags.join(', ')}
+					td
+						- cTags.forEach(function(tag) {
+							<a href="#{tag}">#{tag}</a>
+						- })
 					td #{data[i-1].workData.timeStr} 
 					- cTime = { 'start': workData.start, 'stop': workData.stop }
 					- cTags = [workData.tag];
@@ -50,5 +53,8 @@ table(id="workdata")
 		- });
 		tr
 			td #{data[data.length-1].workData.start.toLocaleDateString()}
-			td #{cTags.join(', ')}
+			td
+				- cTags.forEach(function(tag) {
+					<a href="#{tag}">#{tag}</a>
+				- })
 			td #{data[data.length-1].workData.timeStr}

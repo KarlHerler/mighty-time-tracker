@@ -43,8 +43,12 @@ table(id="workdata")
 				- } else {
 					td #{data[i-1].workData.start.toLocaleDateString()}
 					td
-						- cTags.forEach(function(tag) {
-							<a href="#{tag}">#{tag}</a>
+						- cTags.forEach(function(tag, i) {
+							- if (i<cTags.length-1) {
+								<a href="#{tag}">#{tag}</a>, 
+							- } else {
+								<a href="#{tag}">#{tag}</a>
+							- }
 						- })
 					td #{data[i-1].workData.timeStr} 
 					- cTime = { 'start': workData.start, 'stop': workData.stop }
@@ -54,7 +58,11 @@ table(id="workdata")
 		tr
 			td #{data[data.length-1].workData.start.toLocaleDateString()}
 			td
-				- cTags.forEach(function(tag) {
-					<a href="#{tag}">#{tag}</a>
+				- cTags.forEach(function(tag, i) {
+					- if (i<cTags.length-1) {
+						<a href="#{tag}">#{tag}</a>, 
+					- } else {
+						<a href="#{tag}">#{tag}</a>
+					- }
 				- })
 			td #{data[data.length-1].workData.timeStr}

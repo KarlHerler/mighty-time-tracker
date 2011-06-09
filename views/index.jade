@@ -32,37 +32,13 @@ table(id="workdata")
 		- if (data.length<1) {
 			tr
 				td(colspan=3) Nothing here :(
+		- } else {
+			- data.forEach(function(item) {
+				- var workData = item.workData
+				tr
+					td #{workData.start.toLocaleDateString()}
+					td #{workData.tag}
+					td #{workData.timeStr}
+			- })
 		- }
-		- var cTime = { 'start': data[0].workData.start, 'stop': data[0].workData.stop };
-		- var cTags = [];
-		- data.forEach(function(item, i) {
-			- var workData = item.workData
-			tr
-				- if (((Math.abs(cTime.start.getTime()-workData.start.getTime()))<100) && ((Math.abs(cTime.stop.getTime()-workData.stop.getTime()))<100)) {
-					- cTags.push(workData.tag);
-				- } else {
-					td #{data[i-1].workData.start.toLocaleDateString()}
-					td
-						- cTags.forEach(function(tag, i) {
-							- if (i<cTags.length-1) {
-								<a href="#{tag}">#{tag}</a>, 
-							- } else {
-								<a href="#{tag}">#{tag}</a>
-							- }
-						- })
-					td #{data[i-1].workData.timeStr} 
-					- cTime = { 'start': workData.start, 'stop': workData.stop }
-					- cTags = [workData.tag];
-				- }
-		- });
-		tr
-			td #{data[data.length-1].workData.start.toLocaleDateString()}
-			td
-				- cTags.forEach(function(tag, i) {
-					- if (i<cTags.length-1) {
-						<a href="#{tag}">#{tag}</a>, 
-					- } else {
-						<a href="#{tag}">#{tag}</a>
-					- }
-				- })
-			td #{data[data.length-1].workData.timeStr}
+			

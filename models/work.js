@@ -53,7 +53,7 @@ function loadData(req, res, next) {
 	WorkInstance.find({}, ['_id','tag', 'start', 'stop'], {sort:[['start', -1]]}, function(err, docs) {
 		var workDatas = [];
 		if (docs.length>0) {
-			
+
 			var cWorkData = {workData: {	_id: docs[0].doc._id, 
 																	tag: 			[docs[0].doc.tag], 
 																	start: 		new Date(docs[0].doc.start),
@@ -86,6 +86,7 @@ function loadData(req, res, next) {
 				}
 			}
 		}
+		//needs to add remaining stuff in cWorkdata after loop
 		workDatas.push(cWorkData);
 		var z  = workDatas.length-1;
 		var time = (workDatas[z].workData.stop - workDatas[z].workData.start);

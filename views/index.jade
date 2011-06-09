@@ -37,7 +37,14 @@ table(id="workdata")
 				- var workData = item.workData
 				tr
 					td #{workData.start.toLocaleDateString()}
-					td #{workData.tag}
+					td
+						- workData.tag.forEach(function(tag, i) {
+							- if (i<workData.tag.length-1) {
+								<a href="#{tag}">#{tag}</a>, 
+							- } else {
+								<a href="#{tag}">#{tag}</a>
+							- }
+						- })
 					td #{workData.timeStr}
 			- })
 		- }

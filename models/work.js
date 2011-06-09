@@ -58,16 +58,20 @@ function loadData(req, res, next) {
 																	tag: 			[docs[0].doc.tag], 
 																	start: 		new Date(docs[0].doc.start),
 																	stop: 		new Date(docs[0].doc.stop),
-																	finished: true
+																	isFinished: true
 																}};
 			
 			for (i=1;i<docs.length;i++) {
 				if (docs[i].doc.start!=undefined && docs[i].doc.stop==undefined) {
-					cWorkData.workData.finished = false;
+					cWorkData.workData.isFinished = false;
 				}
-				if (isEqual(cWorkData.workData.start, docs[i].doc.start) && isEqual(cWorkData.workData.stop, docs[i].doc.stop) || (!cWorkData.workData.finished && isEqual(cWorkData.workData.start, docs[i].doc.start))) {
+				if (isEqual(cWorkData.workData.start, docs[i].doc.start) && isEqual(cWorkData.workData.stop, docs[i].doc.stop) 
+						|| (!cWorkData.workData.isFinished && isEqual(cWorkData.workData.start, docs[i].doc.start))) {
+							
 					cWorkData.workData.tag.push(docs[i].doc.tag);
+					
 				} else {
+					
 					workDatas.push(cWorkData);
 					var z = workDatas.length-1;
 
@@ -80,7 +84,7 @@ function loadData(req, res, next) {
 																			tag: 			[docs[i].doc.tag], 
 																			start: 		new Date(docs[i].doc.start),
 																			stop: 		new Date(docs[i].doc.stop),
-																			finished: true
+																			isFinished: true
 																	}};
 
 				}
@@ -94,7 +98,6 @@ function loadData(req, res, next) {
 		workDatas[z].workData.timeStr = timeStr(time);
 		workDatas[z].workData.time = time;
 		
-		console.log(workDatas[0]+", "+workDatas[1]+", "+workDatas[2])
 		req.workDatas = workDatas;
 		next();
 	});

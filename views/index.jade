@@ -38,8 +38,8 @@ table(id="workdata")
 				tr
 					td #{workData.start.toLocaleDateString()}
 					td
-						- workData.tag.forEach(function(tag, i) {
-							- if (i<workData.tag.length-1) {
+						- workData.tags.forEach(function(tag, i) {
+							- if (i<workData.tags.length-1) {
 								<a href="#{tag}">#{tag}</a>, 
 							- } else {
 								<a href="#{tag}">#{tag}</a>

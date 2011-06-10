@@ -12,7 +12,6 @@ function create(u) {
 }
 function destroy(req, res, next) {}
 function validate(name) {
-	console.log("fffuuu");
 	return true;
 }
 

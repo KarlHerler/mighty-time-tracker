@@ -8,7 +8,7 @@ var now = Date.now();
 
 var Work = new Schema({
 	tID 	: ObjectId,
-	tag 	: String,
+	tags 	: [],
 	done	: {type: Boolean, default: false},
 	start : {type: Date, 		default: Date.now },
 	stop	: Date
@@ -50,54 +50,24 @@ function loadData(req, res, next) {
 		filter = {"tag": req.params.tag}
 	}*/
 	
-	WorkInstance.find({}, ['_id','tag', 'start', 'stop'], {sort:[['start', -1]]}, function(err, docs) {
+	WorkInstance.find({}, ['_id','tags', 'start', 'stop', 'done'], {sort:[['start', -1]]}, function(err, docs) {
 		var workDatas = [];
 		if (docs.length>0) {
-
-			var cWorkData = {workData: {	_id: docs[0].doc._id, 
-																	tag: 			[docs[0].doc.tag], 
-																	start: 		new Date(docs[0].doc.start),
-																	stop: 		new Date(docs[0].doc.stop),
-																	isFinished: true
-																}};
-			
-			for (i=1;i<docs.length;i++) {
-				if (docs[i].doc.start!=undefined && docs[i].doc.stop==undefined) {
-					cWorkData.workData.isFinished = false;
-				}
-				if (isEqual(cWorkData.workData.start, docs[i].doc.start) && isEqual(cWorkData.workData.stop, docs[i].doc.stop) 
-						|| (!cWorkData.workData.isFinished && isEqual(cWorkData.workData.start, docs[i].doc.start))) {
-							
-					cWorkData.workData.tag.push(docs[i].doc.tag);
+			for (i=0;i<docs.length;i++) {
+					workDatas[i] = {workData: {
+														_id: 				docs[i].doc__id,
+														tags:				docs[i].doc.tags, 
+														start: 			new Date(docs[i].doc.start),
+														stop: 			new Date(docs[i].doc.stop),
+														done: 			docs[i].doc.done 
+													}};
 					
-				} else {
-					
-					workDatas.push(cWorkData);
-					var z = workDatas.length-1;
+					var time = (workDatas[i].workData.stop - workDatas[i].workData.start);
 
-					var time = (workDatas[z].workData.stop - workDatas[z].workData.start);
-
-					workDatas[z].workData.timeStr = timeStr(time);
-					workDatas[z].workData.time = time;
-
-					cWorkData = {workData: {	_id: docs[i].doc._id, 
-																			tag: 			[docs[i].doc.tag], 
-																			start: 		new Date(docs[i].doc.start),
-																			stop: 		new Date(docs[i].doc.stop),
-																			isFinished: true
-																	}};
-
-				}
+					workDatas[i].workData.timeStr = timeStr(time);
+					workDatas[i].workData.time = time;
 			}
 		}
-		//needs to add remaining stuff in cWorkdata after loop
-		workDatas.push(cWorkData);
-		var z  = workDatas.length-1;
-		var time = (workDatas[z].workData.stop - workDatas[z].workData.start);
-
-		workDatas[z].workData.timeStr = timeStr(time);
-		workDatas[z].workData.time = time;
-		
 		req.workDatas = workDatas;
 		next();
 	});
@@ -109,46 +79,44 @@ function addData(req, res, next) {
 	/* This code is rather messy to be honest */
 	
 	if (req.body.active=='true') {
-		var tags = req.body.tags;
-		var objIds = [];
 		
-		for(i=0;i<tags.length;i++) {
-			var thisWork = new WorkInstance({ tag: tags[i] });
-			objIds[i] = thisWork._id;
-			thisWork.save(function (err) {
-			  if (!err) console.log('Success!');
-				if (err) { req.err = err; }
-			});
-		}
-		req.body.tID = objIds;
+		var thisWork = new WorkInstance({ tags: req.body.tags });
+		var objId = thisWork._id;
+		thisWork.save(function (err) {
+			if (err) { console.log("Could not initiate work: "+err); req.err = err; }
+		});
 		
+		req.body.tID = objId;
 		next();
+		
 	} else {
-		var objIds = req.body.tID;
+		
+		var objId = req.body.tID;
 		var workDatas = []
 		
-		WorkInstance.find({_id: {$in: objIds}}, function(err, time) {
+		WorkInstance.find({_id: objId}, function(err, time) {
 			if (!err) {
-				for (i=0;i<time.length;i++) {
-					var date = new Date;
-					time[i].done = true;
-					time[i].stop = date;
-					workDatas[i] = {workData: {	_id: time[i]._id,
-																			tag: time[i].tag,
-																			start: 	new Date(time[i].start),
-																			stop: 	new Date(time[i].stop)
-																		}};
-					var t = (workDatas[i].workData.stop - workDatas[i].workData.start);
-					workDatas[i].workData.timeStr = timeStr(t);
-					workDatas[i].workData.time = t;
+				var date = new Date;
+				time[0].done = true;
+				time[0].stop = date;
+				workDatas = {workData: {	
+												_id: 		time[0]._id,
+												tags: 	time[0].tags,
+												start: 	new Date(time[0].start),
+												stop: 	new Date(time[0].stop)
+											}};
+					var t = (workDatas.workData.stop - workDatas.workData.start);
+					workDatas.workData.timeStr = timeStr(t);
+					workDatas.workData.time = t;
 					
-					time[i].save(function (err) {
-						if (!err) console.log('Success!');
-						if (err) { req.err = err; }
+					time[0].save(function (err) {
+						if (err) { console.log("Could not complete work: "+err); req.err = err; }
 					});
-				} // end for
+				
 				req.newWorkDatas = workDatas;
 				next();
+			} else {
+				console.log("Could not complete work: "+err)
 			} // end if (!err)
 		}); //end find
 	} // end if (req.active)

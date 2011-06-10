@@ -44,13 +44,13 @@ function isEqual(d1, d2) {
 function loadData(req, res, next) {
 	
 	/* Loads all data. */
-	/*var filter = {}
+	var filter = {}
 	if(req.params.tag) {
 		console.log("fetching data for tag: "+req.params.tag)
-		filter = {"tag": req.params.tag}
-	}*/
+		filter = {"tags": req.params.tag}
+	}
 	
-	WorkInstance.find({}, ['_id','tags', 'start', 'stop', 'done'], {sort:[['start', -1]]}, function(err, docs) {
+	WorkInstance.find(filter, ['_id','tags', 'start', 'stop', 'done'], {sort:[['start', -1]]}, function(err, docs) {
 		var workDatas = [];
 		if (docs.length>0) {
 			for (i=0;i<docs.length;i++) {

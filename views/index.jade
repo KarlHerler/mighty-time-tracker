@@ -45,7 +45,16 @@ table(id="workdata")
 								<a href="#{tag}">#{tag}</a>
 							- }
 						- })
-					td #{workData.timeStr}
+					td
+						- if (workData.done) {
+							#{workData.timeStr}
+						- } else {
+							- if (username) {
+								a(href="#!") Resume
+							- } else {
+								#{"In progress"}
+							- }
+						- }
 			- })
 		- }
 			

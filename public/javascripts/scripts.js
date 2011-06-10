@@ -1,4 +1,3 @@
-
 $("#notice").hide();
 var counter
 var time = {active: false,
@@ -7,6 +6,12 @@ var time = {active: false,
 						time: 0,
 						timeStr: ""
 			 		 };
+			
+function asd() {
+	//checks if any unfinished 
+	//if unfinished then show them and resume counting
+	//else hide #notice
+}
 function makeStr(t){
 	if(t<60) {
 		return t+" sec";
@@ -31,7 +36,7 @@ function updateTime() {
 	$(".time").html(time.timeStr);
 }
 
-function startTime() {
+function startTime(elapsed) {
 	if (time.active==false) {
 		time.active = true;
 		var tags = $("#tags").val().split(",");
@@ -43,6 +48,7 @@ function startTime() {
 		time.tags = tags;
 		time.tagsStr = tagsStr;
 		$(".tags").html(tagsStr);
+		if (elapsed) { time.time=elapsed; }
 		counter = setInterval(updateTime, 1000);
 		$(".time").html("0 sec");
 		$("#notice").slideDown(100, function() {

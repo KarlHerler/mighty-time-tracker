@@ -50,6 +50,8 @@ function loadData(req, res, next) {
 		filter = {"tags": req.params.tag}
 	}
 	
+	if(req.params.done) { filter = {done: false}; }
+	
 	WorkInstance.find(filter, ['_id','tags', 'start', 'stop', 'done'], {sort:[['start', -1]]}, function(err, docs) {
 		var workDatas = [];
 		if (docs.length>0) {
@@ -73,6 +75,12 @@ function loadData(req, res, next) {
 	});
 }
 exports.loadData = loadData;
+
+function loadUnfinished(req, res, next) {
+	req.params.done = true;
+	loadData(req, res, next);
+}
+exports.loadUnfinished = loadUnfinished;
 
 function addData(req, res, next) {
 	

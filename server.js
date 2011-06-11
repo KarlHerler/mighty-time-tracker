@@ -53,6 +53,9 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 app.post('/work', work.addData, function(req, res) {
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
+app.get('/work/unfinished', work.loadUnfinished, function(req, res) {
+	if (!req.err) { res.send(req.workDatas); } else { res.send("Y U NO WORK?!") }
+})
 app.get('/u/session', user.validateSession, function(req, res) {
 	res.render('session', {
 		title: app.set('title')

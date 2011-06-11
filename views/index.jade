@@ -1,20 +1,20 @@
 - if (username) {
 	div.user Hi, <a href="#">#{username}</a>. 
-- }
-header
-	div(id="notice", class="notice")
-		p Tracking: 
-			span(class="tags") You might want to enable javascript
-			span &nbsp;for 
-			span(class="time") this part
-			span .&nbsp;
-			a#done(href="#done") Done!
 
+	header
+		div(id="notice", class="notice")
+			p Tracking: 
+				span(class="tags") You might want to enable javascript
+				span &nbsp;for 
+				span(class="time") this part
+				span .&nbsp;
+				a#done(href="#done") Done!
+- }
 h1= title
 p Welcome to #{title}, a simple little app to keep track of time spent working on something for someone.
 
 - if (username) {
-	form#items-form(action='/', method='post', onsubmit="startTime(); return false;")
+	form#items-form(action='/', method='post', onsubmit="fromForm(); return false;")
 		label(for='work[tags]') Tags, comma separated
 		//input(type='hidden', name='work[tID]', value=tID)
 		input#tags(type='text', name='work[tags]', placeholder='E.g. Research, red-neuron, ux', autofocus)
@@ -35,7 +35,8 @@ table(id="workdata")
 		- } else {
 			- data.forEach(function(item) {
 				- var workData = item.workData
-				tr
+				- var status = (!workData.done) ? "ongoing" : "";
+				tr(class=status)
 					td #{workData.start.toLocaleDateString()}
 					td
 						- workData.tags.forEach(function(tag, i) {
@@ -49,11 +50,7 @@ table(id="workdata")
 						- if (workData.done) {
 							#{workData.timeStr}
 						- } else {
-							- if (username) {
-								a(href="#!") Resume
-							- } else {
 								#{"In progress"}
-							- }
 						- }
 			- })
 		- }

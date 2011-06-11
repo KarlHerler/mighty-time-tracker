@@ -1,18 +1,32 @@
-$("#notice").hide();
 var counter
-var time = {active: false,
-						tags: [],
-						tagsStr: "",
-						time: 0,
-						timeStr: ""
+var time = {tID: 			"",
+						active: 	false,
+						tags: 		[],
+						tagsStr: 	"",
+						time: 		0,
+						timeStr: 	""
 			 		 };
 			
-function asd() {
+function findUnfinished() {
 	//checks if any unfinished 
-	//if unfinished then show them and resume counting
-	//else hide #notice
+	if ($(".ongoing td").length>0 && $("#notice").html()!=null) {
+		$.get('/work/unfinished', function(res) {
+			//gets time elapsed
+			var start = new Date(res[0].workData.start)
+			var now = new Date();
+			var timeElapsed = Math.floor((now - start)/1000); //in seconds
+			time.tID = res[0].workData.tID;
+			startTime(timeElapsed, res[0].workData.tags)
+		});
+		//startTime(tags, elapsed)
+	} else {
+		$("#notice").hide();
+	}
 }
-function makeStr(t){
+
+findUnfinished();
+
+function makeStr(t) {
 	if(t<60) {
 		return t+" sec";
 	} else if (t>3599) {
@@ -35,29 +49,39 @@ function updateTime() {
 	time.timeStr = makeStr(time.time);
 	$(".time").html(time.timeStr);
 }
-
-function startTime(elapsed) {
+function fromForm() {
+	var tags = $("#tags").val().split(",");
+	startTime(0, tags)
+}
+function updateTags(tags) {
+	var tagsStr = tags[0];
+	for(i=0;i<tags.length;i++) {
+		tags[i] = tags[i].replace(/^\s+|\s+$/g, '');
+		if (i>0) { tagsStr = tagsStr+", "+tags[i]; }
+	}
+	time.tags = tags;
+	time.tagsStr = tagsStr;
+}
+function notifyTime() {
+	$(".tags").html(time.tagsStr);
+	$(".time").html(makeStr(time.time));
+	$("#notice").slideDown(100, function() {
+		$("#notice").show();
+	});
+}
+function startTime(elapsed, tags) {
 	if (time.active==false) {
 		time.active = true;
-		var tags = $("#tags").val().split(",");
-		var tagsStr = tags[0];
-		for(i=0;i<tags.length;i++) {
-			tags[i] = tags[i].replace(/^\s+|\s+$/g, '');
-			if (i>0) { tagsStr = tagsStr+", "+tags[i]; }
-		}
-		time.tags = tags;
-		time.tagsStr = tagsStr;
-		$(".tags").html(tagsStr);
+		updateTags(tags); //gives time the tags
 		if (elapsed) { time.time=elapsed; }
+		notifyTime(); 		//update the notice with the correct time
 		counter = setInterval(updateTime, 1000);
-		$(".time").html("0 sec");
-		$("#notice").slideDown(100, function() {
-			$("#notice").show();
+	}
+	if (!elapsed) {
+		$.post('/work', time, function(data) {
+			time = data[0];
 		});
 	}
-	$.post('/work', time, function(data) {
-		time = data[0];
-	});
 	return false;
 }
 

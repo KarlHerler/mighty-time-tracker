@@ -57,7 +57,7 @@ function loadData(req, res, next) {
 		if (docs.length>0) {
 			for (i=0;i<docs.length;i++) {
 					workDatas[i] = {workData: {
-														_id: 				docs[i].doc__id,
+														tID: 				docs[i].doc._id,
 														tags:				docs[i].doc.tags, 
 														start: 			new Date(docs[i].doc.start),
 														stop: 			new Date(docs[i].doc.stop),

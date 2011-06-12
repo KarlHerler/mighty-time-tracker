@@ -1,0 +1,18 @@
+h1=title
+p Can I see some ID, sir?
+
+form#login(action='/session', method='post')
+	table
+		tr
+			td
+				label(for='user[name]') Name
+			td
+				input#name(type='text', name='user[name]', placeholder='Your name', autofocus)
+		tr
+			td
+				label(for='user[password]') Password
+			td
+				input#password(type='password', name='user[password]', placeholder="Your password")
+		tr
+			td(colspan=2)
+				input#submit(type='submit', value='Sign in')

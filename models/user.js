@@ -1,6 +1,27 @@
 var session = require('./session.js')
+var mongoose = require('mongoose');
+//data connection
 
-var user = {}
+mongoose.connect('mongodb://localhost:27017/users');
+var Schema = mongoose.Schema;
+var	ObjectId = Schema.ObjectId;
+
+var Work = new Schema({
+	tID 	: ObjectId,
+	tags 	: [],
+	done	: {type: Boolean, default: false},
+	start : {type: Date, 		default: Date.now },
+	stop	: Date
+});
+
+
+
+
+var user = new Schema({
+	uID				: ObjectId,
+	name			: String,
+	password	: String // should this be string?
+});
 
 function valid(u) {
 	//check if user exists
@@ -31,6 +52,7 @@ function signOut(req, res, next) {
 	next();
 }
 function create(req, res, next) {
+	req.data = "cake";
 	next();
 }
 function destroy(req, res, next) {

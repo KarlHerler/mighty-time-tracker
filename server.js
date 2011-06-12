@@ -61,11 +61,14 @@ app.get('/user/session', user.validateSession, function(req, res) {
 		title: app.set('title')
 	})
 });
-app.get('/user/create', user.create, function(req, res) {
+app.get('/user/create', function(req, res) {
 	res.render('user/create', {
 		title: app.set('title')
 	})
 });
+app.post('/user/create', user.create, function(req, res) {
+	
+})
 
 app.post('/session', user.signIn, function(req, res) {
 	if (req.signedIn) { 

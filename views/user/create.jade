@@ -1,11 +1,11 @@
 h1=title
 p Can I see some ID, sir?
 
-form#login(action='/session', method='post')
+form#login(action='/user/create', method='post')
 	table
 		tr
 			td
-				label(for='user[name]') Name
+				label(for='user[name]') Desired username
 			td
 				input#name(type='text', name='user[name]', placeholder='Your name', autofocus)
 		tr
@@ -14,5 +14,12 @@ form#login(action='/session', method='post')
 			td
 				input#password(type='password', name='user[password]', placeholder="Your password")
 		tr
+			td
+				label(for="user[mail]") Your e-mail
+			td
+				input#mail(type='mail', name='user[mail]', placeholder="Your e-mail")
+			td
+				#{"Don't worry, we won't spam."}
+		tr
 			td(colspan=2)
-				input#submit(type='submit', value='Sign in')
+				input#submit(type='submit', value='Create user')

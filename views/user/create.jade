@@ -8,18 +8,23 @@ form#create-user(action='/user/create', method='post')
 				label(for='user[name]') Desired username
 			td
 				input#name(type='text', name='user[name]', placeholder='Your name', autofocus)
+			td
+				span.validator
 		tr
 			td
 				label(for='user[password]') Password
 			td
 				input#password(type='password', name='user[password]', placeholder="Your password")
+			td
+				span.validator
 		tr
 			td
 				label(for="user[mail]") Your e-mail
 			td
 				input#mail(type='mail', name='user[mail]', placeholder="Your e-mail")
 			td
-				#{"Don't worry, we won't spam."}
+				span.validator
+					#{"Don't worry, we won't spam."}
 		tr
 			td(colspan=2)
 				input#submit(type='submit', value='Create user')

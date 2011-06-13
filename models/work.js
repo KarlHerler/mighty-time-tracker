@@ -1,7 +1,8 @@
 var  mongoose = require('mongoose');
 //data connection
+var db = (process.env.NODE_ENV==="development") ? "worktime_test" : "worktime";
+mongoose.connect('mongodb://localhost:27017'+db);
 
-mongoose.connect('mongodb://localhost:27017/worktime_test');
 var Schema = mongoose.Schema;
 var	ObjectId = Schema.ObjectId;
 var now = Date.now();

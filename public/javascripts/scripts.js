@@ -10,7 +10,6 @@ var time = {tID: 			"",
 
 /* starter functions, should happen on load */	
 findUnfinished();
-createSums();
 
 function findUnfinished() {
 	//checks if any unfinished 

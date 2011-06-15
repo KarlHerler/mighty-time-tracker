@@ -23,7 +23,6 @@ function findUnfinished() {
 			time.tID = res[0].workData.tID;
 			startTime(timeElapsed, res[0].workData.tags)
 		});
-		startTime(tags, elapsed)
 	} else {
 		$("#notice").hide();
 	}
@@ -32,7 +31,7 @@ function findUnfinished() {
 function primeChart() {
 	$("#chart").hide();
   var times = [];
-  $("tbody td:last-child").each(function() {times.push(($(this).attr('class'))/1000/60) });
+  $("tbody td:last-child").each(function() { if($(this).attr('class')!=="ongoing") { times.push(($(this).attr('class'))/1000/60) }});
 	times = times.reverse();
 	
   var labels = (function lambda(x, y){ if(x>0) { y[x-1]=x; lambda(x-1, y); } return y })(times.length, []);

@@ -14,14 +14,18 @@ var Work = new Schema({
 	stop	: Date
 });
 
-
-
-
 var user = new Schema({
 	uID				: ObjectId,
 	name			: String,
 	password	: String // should this be string?
 });
+
+function validate(req, res, next) {
+	//check if field is valid, only for username
+	console.log(req.body.name);
+	req.data = req.body.name;	//ades
+	next();
+}
 
 function valid(u) {
 	//check if user exists
@@ -52,6 +56,9 @@ function signOut(req, res, next) {
 	next();
 }
 function create(req, res, next) {
+	console.log(req.body.user.name);
+	console.log(req.body.user.password);
+	console.log(req.body.user.mail);
 	req.data = "cake";
 	next();
 }
@@ -64,6 +71,7 @@ function validateSession(req, res, next) {
 	next();
 }
 exports.session 	= session; //the child model.
+exports.validate	= validate;
 exports.signIn 		= signIn;
 exports.signOut		= signOut;
 exports.create 		= create;

@@ -21,16 +21,21 @@ p Welcome to #{title}, a simple little app to keep track of time spent working o
 		input#submit(type='submit', value='Start tracking')
 - }
 br
-- var sum = 0; var monthSum = 0;
-//this should be merged with the later loop for O(n) rather than O(2n)
-- data.forEach(function(item) {
-	- if (item.workData.done) {
-		- sum += item.workData.time/3600000;
-		- if (item.workData.start.getMonth()===(function () { var d = new Date(); return d.getMonth(); })()) {
-			- monthSum += item.workData.time/3600000;
+- if (data.length>0) {
+	div#chart
+
+	- var sum = 0; var monthSum = 0;
+	//this should be merged with the later loop for O(n) rather than O(2n)
+	- data.forEach(function(item) {
+		- if (item.workData.done) {
+			- sum += item.workData.time/3600000;
+			- if (item.workData.start.getMonth()===(function () { var d = new Date(); return d.getMonth(); })()) {
+				- monthSum += item.workData.time/3600000;
+			- }
 		- }
-	- }
-- });
+	- });
+- }
+
 table(id="workdata")
 	- if (data.length>0) {
 		thead
@@ -42,12 +47,12 @@ table(id="workdata")
 				td.sum.month Sum this month
 					div.string
 					div.number #{Math.ceil(monthSum)}
+		thead
+			tr
+				th Date
+				th Tag
+				th Time
 	- }
-	thead
-		tr
-			th Date
-			th Tag
-			th Time
 	tbody
 		- if (data.length<1) {
 			tr
@@ -66,12 +71,14 @@ table(id="workdata")
 								<a href="#{tag}">#{tag}</a>
 							- }
 						- })
-					td
-						- if (workData.done) {
+					
+					- if (workData.done) {
+						td(class=workData.time)
 							#{workData.timeStr}
-						- } else {
+					- } else {
+						td(class="ongoing")
 								#{"In progress"}
-						- }
+					- }
 			- })
 		- }
-			
+	

@@ -34,6 +34,7 @@ function primeChart() {
   var times = [];
   $("tbody td:last-child").each(function() {times.push(($(this).attr('class'))/1000/60) });
 	times = times.reverse();
+	
   var labels = (function lambda(x, y){ if(x>0) { y[x-1]=x; lambda(x-1, y); } return y })(times.length, []);
   console.log(times);
   console.log(labels);
@@ -92,9 +93,9 @@ function renderChart(labels, times) {
                                   });
 
   // example
-  linechart.click(function() {
+  /*linechart.click(function() {
      alert("You clicked on the line chart!"); 
-  });
+  });*/
 }
 
 /* time tracking code */

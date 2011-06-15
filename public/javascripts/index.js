@@ -38,7 +38,7 @@ function primeChart() {
   var labels = (function lambda(x, y){ if(x>0) { y[x-1]=x; lambda(x-1, y); } return y })(times.length, []);
   console.log(times);
   console.log(labels);
-  renderChart(labels, times)
+  //renderChart(labels, times)
 }
 
 function renderChart(labels, times) {

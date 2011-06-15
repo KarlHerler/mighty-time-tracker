@@ -67,7 +67,7 @@ function renderChart(labels, times) {
 	$("#chart").show();
   // example
 
-  linechart.hoverColumn(function () {
+  /*linechart.hoverColumn(function () {
                       this.tags = r.set();
                       for (var i = 0, ii = this.y.length; i < ii; i++) {
                           this.tags.push(
@@ -77,7 +77,7 @@ function renderChart(labels, times) {
                   }, function () {
                       this.tags && this.tags.remove();
                   });
-  console.log(linechart.symbols[0][1].attr())
+  console.log(linechart.symbols[0][1].attr())*/
   linechart.symbols.attr({r: 3.5, fill: '#fff', stroke: "#2A8FBD"});
   //linechart.lines[0].animate({"stroke-width": 6}, 1000);
   //linechart.symbols[0][1].animate({fill: "#f00"}, 1000);

@@ -23,7 +23,7 @@ function findUnfinished() {
 			time.tID = res[0].workData.tID;
 			startTime(timeElapsed, res[0].workData.tags)
 		});
-		//startTime(tags, elapsed)
+		startTime(tags, elapsed)
 	} else {
 		$("#notice").hide();
 	}

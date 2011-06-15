@@ -38,6 +38,7 @@ app.get('/', work.loadData, function(req, res){
 		var uname = (req.session.user===undefined) ? "" : req.session.user.name;
 		res.render('index', {
     	title: app.set('title'),
+			page: "index",
 			data: req.workDatas,
 			username: uname,
 			tracking: true
@@ -46,6 +47,7 @@ app.get('/', work.loadData, function(req, res){
 app.post('/', work.addData, work.loadData, function(req, res) {
 	res.render('index', {
 		title:  app.set('title'),
+		page: "index",
 		data: req.workDatas,
 		tracking: true
 	})
@@ -58,17 +60,22 @@ app.get('/work/unfinished', work.loadUnfinished, function(req, res) {
 })
 app.get('/user/session', user.validateSession, function(req, res) {
 	res.render('session', {
-		title: app.set('title')
+		title: app.set('title'),
+		page: "user/session"
 	})
 });
 app.get('/user/create', function(req, res) {
 	res.render('user/create', {
-		title: app.set('title')
+		title: app.set('title'),
+		page: "user/create"
 	})
 });
 app.post('/user/create', user.create, function(req, res) {
 	
-})
+});
+app.post('/user/validate/:parameter', user.validate, function(req, res) {
+	res.send(req.data)
+});
 
 app.post('/session', user.signIn, function(req, res) {
 	if (req.signedIn) { 
@@ -81,6 +88,7 @@ app.get('/:tag', work.loadData, function(req, res) {
 	var uname = (req.session) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
 	res.render('index', {
 		title: req.params.tag,
+		page: "index",
 		data: req.workDatas,
 		username: uname,
 		tracking: true

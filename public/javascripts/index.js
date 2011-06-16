@@ -19,7 +19,7 @@ function findUnfinished() {
 			//gets time elapsed
 			var start = new Date(res[0].workData.start)
 			var now = new Date();
-			var timeElapsed = Math.floor((now - start)/1000); //in seconds
+			var timeElapsed = Math.floor((now - start)/1000/60/60); //in hours
 			time.tID = res[0].workData.tID;
 			startTime(timeElapsed, res[0].workData.tags)
 		});
@@ -31,12 +31,26 @@ function findUnfinished() {
 function primeChart() {
 	$("#chart").hide();
   var times = [];
-  $("tbody td:last-child").each(function() { if($(this).attr('class')!=="ongoing") { times.push(($(this).attr('class'))/1000/60) }});
+	var dayTime = 0;
+	var cDay = $("tbody td").eq(0).html();
+  $("tbody td:last-child").each(function() { 
+		if($(this).attr('class')!=="ongoing") {
+			if (cDay===$(this).parent().find("td").eq(0).html()) {
+				dayTime += (($(this).attr('class'))/1000);
+			} else {
+				cDay = $(this).parent().find("td").eq(0).html();
+				times.push(dayTime)	
+				dayTime = 0;
+			}
+		}
+	});
+	times.push(dayTime);
+	
 	times = times.reverse();
 	
   var labels = (function lambda(x, y){ if(x>0) { y[x-1]=x; lambda(x-1, y); } return y })(times.length, []);
   console.log(times);
-  console.log(labels);
+ 	console.log(labels);
   renderChart(labels, times)
 }
 

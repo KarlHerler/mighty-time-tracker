@@ -19,7 +19,7 @@ function findUnfinished() {
 			//gets time elapsed
 			var start = new Date(res[0].workData.start)
 			var now = new Date();
-			var timeElapsed = Math.floor((now - start)/1000/60/60); //in hours
+			var timeElapsed = Math.floor((now - start)/1000); //in seconds
 			time.tID = res[0].workData.tID;
 			startTime(timeElapsed, res[0].workData.tags)
 		});
@@ -36,7 +36,7 @@ function primeChart() {
   $("tbody td:last-child").each(function() { 
 		if($(this).attr('class')!=="ongoing") {
 			if (cDay===$(this).parent().find("td").eq(0).html()) {
-				dayTime += (($(this).attr('class'))/1000);
+				dayTime += (($(this).attr('class'))/1000/60/60);
 			} else {
 				cDay = $(this).parent().find("td").eq(0).html();
 				times.push(dayTime)	

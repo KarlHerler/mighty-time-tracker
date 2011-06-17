@@ -49,7 +49,7 @@ function primeChart() {
 	
 	times = times.reverse();
 	
-  var labels = (function lambda(x, y){ if(x>0) { y[x-1]=x; lambda(x-1, y); } return y })(times.length, []);
+  var labels = (function lambda(x, y){ if(x>0) { y[x-1]=(x-1)/2; lambda(x-1, y); } return y })(times.length, []);
   console.log(times);
  	console.log(labels);
   renderChart(labels, times)

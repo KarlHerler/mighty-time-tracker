@@ -91,8 +91,9 @@ function renderChart(labels, times) {
 																								this.y[i], 
 																								Math.round(this.values[i]*100)/100+" h", 
 																								160, 
-																								10).insertBefore(this).attr([{fill: "#fff"}, 
-                                                                             {fill: "#333"}])
+																								10
+																							).insertBefore(this).attr([{fill: "#fff"}, 
+                                                                         {fill: "#333"}])
 																					);
                       }
                   }, function () {

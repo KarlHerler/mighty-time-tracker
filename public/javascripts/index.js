@@ -39,7 +39,8 @@ function primeChart() {
 				dayTime += (($(this).attr('class'))/1000/60/60);
 			} else {
 				cDay = $(this).parent().find("td").eq(0).html();
-				times.push(dayTime)	
+				
+				times.push(Math.round(dayTime*100)/100)	
 				dayTime = 0;
 			}
 		}

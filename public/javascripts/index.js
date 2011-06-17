@@ -40,7 +40,7 @@ function primeChart() {
 			} else {
 				cDay = $(this).parent().find("td").eq(0).html();
 				
-				times.push(Math.round(dayTime*100)/100)	
+				times.push(dayTime)	
 				dayTime = 0;
 			}
 		}
@@ -82,22 +82,28 @@ function renderChart(labels, times) {
 	$("#chart").show();
   // example
 
-  /*linechart.hoverColumn(function () {
+  linechart.hoverColumn(function () {
                       this.tags = r.set();
                       for (var i = 0, ii = this.y.length; i < ii; i++) {
                           this.tags.push(
-                                      r.g.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{fill: "#fff"}, 
-                                                                                                                   {fill: "#333"}]));
+                                      r.g.tag(
+																								this.x, 
+																								this.y[i], 
+																								Math.round(this.values[i]*100)/100+" h", 
+																								160, 
+																								10).insertBefore(this).attr([{fill: "#fff"}, 
+                                                                             {fill: "#333"}])
+																					);
                       }
                   }, function () {
                       this.tags && this.tags.remove();
                   });
-  console.log(linechart.symbols[0][1].attr())*/
+  console.log(linechart.symbols[0][1].attr())
   linechart.symbols.attr({r: 3.5, fill: '#fff', stroke: "#2A8FBD"});
   //linechart.lines[0].animate({"stroke-width": 6}, 1000);
   //linechart.symbols[0][1].animate({fill: "#f00"}, 1000);
 
-  linechart.hover( function () {
+  /*linechart.hover( function () {
                                       this.tags = r.set();
                                       for (var i = 0, ii = this.y.length; i < ii; i++) {
                                           this.tags.push(r.g.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{fill: "#fff"}, {fill: this.symbols[i].attr("fill")}]));
@@ -105,7 +111,7 @@ function renderChart(labels, times) {
                                   }, function () {
                                       this.tags && this.tags.remove();
                                   });
-
+*/
   // example
   /*linechart.click(function() {
      alert("You clicked on the line chart!"); 

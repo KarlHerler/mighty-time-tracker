@@ -21,7 +21,7 @@ form#create-user(action='/user/create', method='post', onsubmit="createUser(); r
 			td
 				label(for="user[mail]") Your e-mail
 			td
-				input#mail(type='mail', name='user[mail]', placeholder="Your e-mail")
+				input#mail(type='email', name='user[mail]', placeholder="Your e-mail")
 			td
 				span.validator
 					#{"Don't worry, we won't spam."}

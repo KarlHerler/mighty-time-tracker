@@ -1,30 +1,37 @@
 var session = require('./session.js')
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 //data connection
 
 mongoose.connect('mongodb://localhost:27017/users');
 var Schema = mongoose.Schema;
 var	ObjectId = Schema.ObjectId;
 
-var Work = new Schema({
-	tID 	: ObjectId,
-	tags 	: [],
-	done	: {type: Boolean, default: false},
-	start : {type: Date, 		default: Date.now },
-	stop	: Date
-});
-
-var user = new Schema({
+var User = new Schema({
 	uID				: ObjectId,
 	name			: String,
-	password	: String // should this be string?
+	password	: String, // should this be string?
+	createdOn : Date
 });
+
+
+mongoose.model('User', User)
+// retrieve my model
+exports.UserInstance = mongoose.model('User');
+
+var UserInstance = mongoose.model('User');
+
+
+
 
 function validate(req, res, next) {
 	//check if field is valid, only for username
-	console.log(req.body.name);
-	req.data = req.body.name;	//ades
-	next();
+	UserInstance.find(req.body, ['_id'], function(err, docs) {
+		var isAvaliable = true
+		if (docs.length>0) { isAvaliable = false; }
+		req.data = { isAvaliable: isAvaliable };
+		next();
+	});
 }
 
 function valid(u) {
@@ -56,10 +63,33 @@ function signOut(req, res, next) {
 	next();
 }
 function create(req, res, next) {
-	console.log(req.body.user.name);
-	console.log(req.body.user.password);
-	console.log(req.body.user.mail);
-	req.data = "cake";
+	var date = new Date();
+	
+	//non random salting.
+	var salt = crypto.createHash('sha1');
+	salt.update("midsommarafton och det regnar. :(")
+	salt = salt.digest('hex');
+	
+	//the actual password hash
+	var hash = crypto.createHash('sha256');
+	hash.update(salt)
+	hash.update(req.body.user.password);
+	hash.update(date);
+	hash = hash.digest('hex');
+	
+	var user = new UserInstance({
+		name: req.body.user.name,
+		password: hash,
+		mail: req.body.user.mail,
+		date: date
+	});
+	var objId = user._id;
+	user.save(function (err) {
+		if (err) { console.log("Could not initiate work: "+err); req.err = err; }
+	});
+	
+	req.data = user;
+	
 	next();
 }
 function destroy(req, res, next) {

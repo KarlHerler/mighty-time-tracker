@@ -71,7 +71,7 @@ app.get('/user/create', function(req, res) {
 	})
 });
 app.post('/user/create', user.create, function(req, res) {
-	
+	res.send(req.data)
 });
 app.post('/user/validate/:parameter', user.validate, function(req, res) {
 	res.send(req.data)

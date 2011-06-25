@@ -93,7 +93,8 @@ function create(req, res, next) {
 	console.log("Created date");
 	console.log(req);
 	console.log("###############################################")
-	console.log(req.body)
+	console.log(hash(req.body.user.password, date))
+	console.log(date);
 	var userc = {
 		name: req.body.user.name,
 		password: hash(req.body.user.password, date),

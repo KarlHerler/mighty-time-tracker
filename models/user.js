@@ -31,7 +31,7 @@ function hash(s, date) {
 	salt.update("midsommarafton och det regnar. :(")
 	console.log("updeted");
 	salt = salt.digest('hex');
-	console.log("digested")
+	console.log("digested");
 	
 	//the actual password hash
 	var hash = crypto.createHash('sha256');
@@ -39,7 +39,7 @@ function hash(s, date) {
 	hash.update(s);
 	hash.update(date);
 	hash = hash.digest('hex');
-	
+	console.log(hash)
 	return hash;
 } 
 function valid(u) {

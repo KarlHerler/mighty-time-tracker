@@ -88,6 +88,7 @@ function signOut(req, res, next) {
 	next();
 }
 function create(req, res, next) {
+	console.log("Starting create");
 	var date = new Date();
 	var user = new UserInstance({
 		name: req.body.user.name,
@@ -95,6 +96,7 @@ function create(req, res, next) {
 		mail: req.body.user.mail,
 		date: date
 	});
+	console.log("initiated user")
 	
 	user.save(function (err) { 
 		if (err) { 
@@ -104,6 +106,7 @@ function create(req, res, next) {
 		} else {
 			req.isCreated = true;
 		} 
+		console.log("saved")
 		next();
 	});
 }

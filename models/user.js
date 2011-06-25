@@ -30,7 +30,7 @@ function hash(s, date) {
 	salt = salt.digest('hex');
 	
 	//the actual password hash
-	var hash = crypto.createHash('sha256');
+	var hash = crypto.createHash('sha1');
 	hash.update(salt)
 	hash.update(s);
 	hash.update(date);

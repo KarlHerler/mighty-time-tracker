@@ -96,9 +96,16 @@ function create(req, res, next) {
 		date: date
 	});
 	
-	user.save(function (err) { if (err) { console.log("Could not initiate users: "+err); req.err = err; } });
-	
-	next();
+	user.save(function (err) { 
+		if (err) { 
+			console.log("Could not initiate users: "+err);
+			req.isCreated = false
+			req.err = err; 
+		} else {
+			req.isCreated = true;
+		} 
+		next();
+	});
 }
 function destroy(req, res, next) {
 	next();

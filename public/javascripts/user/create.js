@@ -10,6 +10,11 @@ function createUser() {
 	if (Validity.name&&Validity.password&&Validity.mail) {
 		$.post('/user/create', $("form").serialize(), function(res) {
 			console.log(res)
+			if (res.isCreated) {
+				window.location = '/';
+			} else {
+				alert("unable to create at the moment. ("+res.err.message.split(':')[0]+")")
+			}
 		});
 	} 
 }

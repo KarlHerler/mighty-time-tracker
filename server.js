@@ -58,7 +58,7 @@ app.post('/work', work.addData, function(req, res) {
 app.get('/work/unfinished', work.loadUnfinished, function(req, res) {
 	if (!req.err) { res.send(req.workDatas); } else { res.send("Y U NO WORK?!") }
 })
-app.get('/user/session', user.validateSession, function(req, res) {
+app.get('/user/session', function(req, res) {
 	res.render('session', {
 		title: app.set('title'),
 		page: "user/session"
@@ -71,7 +71,8 @@ app.get('/user/create', function(req, res) {
 	})
 });
 app.post('/user/create', user.create, function(req, res) {
-	res.send(req.data)
+	res.redirect('/'); // should only happen if successful
+	//res.send(req.data)
 });
 app.post('/user/validate/:parameter', user.validate, function(req, res) {
 	res.send(req.data)

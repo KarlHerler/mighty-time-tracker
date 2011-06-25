@@ -22,8 +22,43 @@ exports.UserInstance = mongoose.model('User');
 var UserInstance = mongoose.model('User');
 
 
+// Helpers
+function hash(s, date) {
+	//non random salting.
+	var salt = crypto.createHash('sha1');
+	salt.update("midsommarafton och det regnar. :(")
+	salt = salt.digest('hex');
+	
+	//the actual password hash
+	var hash = crypto.createHash('sha256');
+	hash.update(salt)
+	hash.update(s);
+	hash.update(date);
+	hash = hash.digest('hex');
+	
+	return hash;
+} 
+function valid(u) {
+	//check if user exists
+	//TODO: write actual thing.
+	console.log('validating user: '+ u.name);
+	if (u) {
+		UserInstance.findOne({name: u.name}, ['date', 'password'], function(err, docs) {
+			if(err) { console.log("Error in valid: "+err) }
+			var date = new Date(docs.doc.date);
+			u.password = hash(u.password, date);
+			if (u.password === docs.password) {
+				console.log("valid: true")
+				return true;
+			} else {
+				return false;
+			}
+		});
+	}
+}
 
 
+// REST methods
 function validate(req, res, next) {
 	//check if field is valid, only for username
 	UserInstance.find(req.body, ['_id'], function(err, docs) {
@@ -34,28 +69,18 @@ function validate(req, res, next) {
 	});
 }
 
-function valid(u) {
-	//check if user exists
-	//TODO: write actual thing.
-	console.log('validating user: '+ u);
-	if (u) {
-		if(u.name!="" && u.password!="") {
-			if (u.name === "karlherler" && u.password === "cake") {
-				return true
-			}
-		} 
-	}
-	return false;
-}
 function signIn(req, res, next) {
-	if (valid(req.body.user)) {
-		user = {id: 'ohmanohgodohman', name: req.body.user.name} //should be objId
-		req.session.user = user;
-		req.signedIn = true;
-	} else {
-		req.signedIn = false;
+	var u = req.body.user
+	console.log('validating user: '+ u.name);
+	if (u) {
+		UserInstance.findOne({name: u.name}, ['date', 'password'], function(err, docs) {
+			if(err) { console.log("Error in valid: "+err) }
+			var date = new Date(docs.doc.date);
+			u.password = hash(u.password, date);
+			req.signedIn = (u.password === docs.password);
+			next();
+		});
 	}
-	next();
 }
 function signOut(req, res, next) {
 	user = "";
@@ -64,31 +89,14 @@ function signOut(req, res, next) {
 }
 function create(req, res, next) {
 	var date = new Date();
-	
-	//non random salting.
-	var salt = crypto.createHash('sha1');
-	salt.update("midsommarafton och det regnar. :(")
-	salt = salt.digest('hex');
-	
-	//the actual password hash
-	var hash = crypto.createHash('sha256');
-	hash.update(salt)
-	hash.update(req.body.user.password);
-	hash.update(date);
-	hash = hash.digest('hex');
-	
 	var user = new UserInstance({
 		name: req.body.user.name,
-		password: hash,
+		password: hash(req.body.user.password, date),
 		mail: req.body.user.mail,
 		date: date
 	});
-	var objId = user._id;
-	user.save(function (err) {
-		if (err) { console.log("Could not initiate work: "+err); req.err = err; }
-	});
 	
-	req.data = user;
+	user.save(function (err) { if (err) { console.log("Could not initiate users: "+err); req.err = err; } });
 	
 	next();
 }
@@ -97,7 +105,8 @@ function destroy(req, res, next) {
 }
 
 function validateSession(req, res, next) {
-	session.validate(user.name)
+	console.log(req.body);
+	/*session.validate(user.name)*/
 	next();
 }
 exports.session 	= session; //the child model.

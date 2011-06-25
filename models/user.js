@@ -90,6 +90,14 @@ function signOut(req, res, next) {
 function create(req, res, next) {
 	console.log("Starting create");
 	var date = new Date();
+	console.log("Created date");
+	var userc = {
+		name: req.body.user.name,
+		password: hash(req.body.user.password, date),
+		mail: req.body.user.mail,
+		date: date
+	}
+	console.log("creating userInstance with data: "+userc);
 	var user = new UserInstance({
 		name: req.body.user.name,
 		password: hash(req.body.user.password, date),

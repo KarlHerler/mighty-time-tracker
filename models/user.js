@@ -74,6 +74,7 @@ function signIn(req, res, next) {
 			var date = new Date(docs.doc.date);
 			u.password = hash(u.password, date);
 			req.signedIn = (u.password === docs.password);
+			if (req.signedIn) { req.session.user = u; }
 			next();
 		});
 	}

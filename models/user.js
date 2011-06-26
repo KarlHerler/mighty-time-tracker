@@ -26,6 +26,7 @@ var UserInstance = mongoose.model('User');
 function hash(s, date) {
 	//non random salting.
 	console.log("started hashing")
+	console.log("Data: " + s + " and "+date)
 	var salt = crypto.createHash('sha256');
 	console.log("created hash object")
 	salt.update("midsommarafton och det regnar. :(")

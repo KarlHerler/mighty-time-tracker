@@ -25,14 +25,7 @@ var UserInstance = mongoose.model('User');
 // Helpers
 function hash(s, date) {
 	//non random salting.
-	console.log("started hashing")
-	console.log("Data: " + s + " and "+date)
-	var salt = crypto.createHash('sha256');
-	console.log("created hash object")
-	salt.update("midsommarafton och det regnar. :(")
-	console.log("updeted");
-	salt = salt.digest('hex');
-	console.log("digested");
+	var salt = 'b1e50f0c2cf2c032b4b011460071432354fb47113f7734b4bff4070fee278ce8c';
 	
 	//the actual password hash
 	var hash = crypto.createHash('sha256');

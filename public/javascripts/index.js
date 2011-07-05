@@ -61,6 +61,7 @@ function primeChart() {
 	labels.push(makeDateStr(cDay));
 	
 	times = times.reverse();
+	labels = labels.reverse();
 	
   //var labels = (function lambda(x, y){ if(x>0) { y[x-1]=(x-1)/2; lambda(x-1, y); } return y })(times.length, []);
   renderChart(times, labels)

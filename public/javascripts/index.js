@@ -74,8 +74,8 @@ function renderChart(times, labels) {
 	  	renderTo: 'chart',
 	    defaultSeriesType: 'areaspline',
 			backgroundColor: 'none',
-			height: 180,
-			width: 633,
+			height: 270,
+			width: ($("table").width()),
 			marginLeft: 55
 	  },
 		plotOptions: {

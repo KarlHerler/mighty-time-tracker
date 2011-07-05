@@ -12,6 +12,12 @@ findUnfinished();
 //renderChart();
 primeChart();
 
+
+var workChart; // globally available
+function renderChart2() {
+	
+}
+
 function findUnfinished() {
 	//checks if any unfinished 
 	if ($(".ongoing td").length>0 && $("#notice").html()!=null) {
@@ -49,74 +55,40 @@ function primeChart() {
 	
 	times = times.reverse();
 	
-  var labels = (function lambda(x, y){ if(x>0) { y[x-1]=(x-1)/2; lambda(x-1, y); } return y })(times.length, []);
-  console.log(times);
- 	console.log(labels);
-  renderChart(labels, times)
+  //var labels = (function lambda(x, y){ if(x>0) { y[x-1]=(x-1)/2; lambda(x-1, y); } return y })(times.length, []);
+  renderChart(times)
 }
 
-function renderChart(labels, times) {
-  // create at top left corner of #element
-  
-	var r = Raphael('chart', $("table").width()+50);
-	
-	
-	var linechart = {width: ($("table").width()), height: ($("table").width()/4)}
-  		linechart = r.g.linechart(
-																	50, 							/* margin left */ 
-																	20, 							/* margin top */
-																	linechart.width, 	/* width */
-																	linechart.height, /* height */
-																	labels, 					/* data labels */
-																	times, 						/* times */
-																	{
-																		"colors": ["#2A8FBD"], 
-																		"symbol": "o", 
-																		shade: 		true, 
-																		axis: 		"0 0 1 1", 
-																		smooth: 	true
-																	}
-																);
-  $("#chart").css('height', ($("table").width()/4)+25);
-
+function renderChart(times) {
 	$("#chart").show();
-  // example
-
-  linechart.hoverColumn(function () {
-                      this.tags = r.set();
-                      for (var i = 0, ii = this.y.length; i < ii; i++) {
-                          this.tags.push(
-                                      r.g.tag(
-																								this.x, 
-																								this.y[i], 
-																								Math.round(this.values[i]*100)/100+" h", 
-																								160, 
-																								10
-																							).insertBefore(this).attr([{fill: "#fff"}, 
-                                                                         {fill: "#333"}])
-																					);
-                      }
-                  }, function () {
-                      this.tags && this.tags.remove();
-                  });
-  console.log(linechart.symbols[0][1].attr())
-  linechart.symbols.attr({r: 3.5, fill: '#fff', stroke: "#2A8FBD"});
-  //linechart.lines[0].animate({"stroke-width": 6}, 1000);
-  //linechart.symbols[0][1].animate({fill: "#f00"}, 1000);
-
-  /*linechart.hover( function () {
-                                      this.tags = r.set();
-                                      for (var i = 0, ii = this.y.length; i < ii; i++) {
-                                          this.tags.push(r.g.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{fill: "#fff"}, {fill: this.symbols[i].attr("fill")}]));
-                                      }
-                                  }, function () {
-                                      this.tags && this.tags.remove();
-                                  });
-*/
-  // example
-  /*linechart.click(function() {
-     alert("You clicked on the line chart!"); 
-  });*/
+	workChart = new Highcharts.Chart({
+		chart: {
+	  	renderTo: 'chart',
+	    defaultSeriesType: 'areaspline',
+			backgroundColor: 'none',
+			height: 180,
+			width: 633,
+			marginLeft: 55
+	  },
+	  title: {
+	  	text: ''
+	  },
+	  yAxis: {
+	  	title: {
+	    	text: ''
+	    }
+	 	},
+	  series: [{
+	  	name: 'work',
+	    data: times
+	  }],
+		credits: {
+			enabled: false
+		},
+		legend: {
+			enabled: false
+		}
+	});
 }
 
 /* time tracking code */
@@ -211,10 +183,3 @@ $("#done").click(function() {
 					timeStr: ""
 				 }
 });
-
-
-
-
-
-
-

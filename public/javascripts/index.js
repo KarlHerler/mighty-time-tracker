@@ -14,9 +14,6 @@ primeChart();
 
 
 var workChart; // globally available
-function renderChart2() {
-	
-}
 
 function findUnfinished() {
 	//checks if any unfinished 
@@ -38,7 +35,7 @@ function makeDateStr(x) {
 	var d = new Date(x); 
 	return d.getDate()+"."+(d.getMonth()+1);
 }
-function primeChart() {
+function primeChart(adder) {
 	$("#chart").hide();
   var times = [];
 	var dayTime = 0;
@@ -60,8 +57,13 @@ function primeChart() {
 	times.push(dayTime);
 	labels.push(makeDateStr(cDay));
 	
+	
+	if (adder!==undefined) { times[0] = times[0]+adder }
 	times = times.reverse();
+	
 	labels = labels.reverse();
+	
+	console.log(times)
 	
   //var labels = (function lambda(x, y){ if(x>0) { y[x-1]=(x-1)/2; lambda(x-1, y); } return y })(times.length, []);
   renderChart(times, labels)
@@ -140,7 +142,8 @@ function updateTime() {
 }
 function fromForm() {
 	var tags = $("#tags").val().split(",");
-	startTime(0, tags)
+	startTime(0, tags);
+	window.scroll(0,0);
 }
 function updateTags(tags) {
 	var tagsStr = tags[0];
@@ -183,25 +186,25 @@ $("#done").click(function() {
 	
 	$.post('/work', time, function(data) {
 		var d = data[1];
-		var addedWorks = "";
-		for (i=0; i<d.length;i++) {
-			addedWorks = addedWorks+"<tr class='flash'>"
-			var start  = new Date(d[i].workData.start);
-			addedWorks = addedWorks+"<td>"+start.toLocaleDateString()+"</td>";
-			addedWorks = addedWorks+"<td>"+d[i].workData.tag+"</td>";
-			addedWorks = addedWorks+"<td>"+d[i].workData.timeStr+"</td>";
-		}
-		addedWorks = addedWorks + "</tr>";
+		var addedWorks = "<tr>";
+				//var start  = new Date(d[i].workData.start);
+		var start = new Date();
+				addedWorks = addedWorks+"<td>"+start.toLocaleDateString()+"</td><td>";
+		var tags = data[0].tags;
+			for (i=0; i<tags.length;i++) {
+				addedWorks = addedWorks+"<a href='"+tags[i]+"'>"+tags[i]+"</a>";
+			}
+			addedWorks = addedWorks+"</td><td>"+data[0].timeStr+"</td>";
+			addedWorks = addedWorks + "</tr>";
 		$("#workdata tbody").prepend(addedWorks);
-		/*$("#workdata .flash td").animate({border: 0}, 20000, function() {
-			$(this).parent().removeClass("flash");
-		});*/
+		primeChart((parseInt(data[0].time)/3600), 10);
 	});
 	
-	time = {active: false,
-					tags: [],
-					tagsStr: "",
-					time: 0,
-					timeStr: ""
-				 }
+	time = {
+		active: false,
+		tags: [],
+		tagsStr: "",
+		time: 0,
+		timeStr: ""
+	}
 });

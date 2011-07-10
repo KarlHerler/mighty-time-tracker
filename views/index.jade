@@ -1,5 +1,5 @@
 - if (username) {
-	div.user Hi, <a href="#">#{username}</a>. 
+	div.user Hi, <a href="/#{username}">#{username}</a>. 
 
 	header
 		div(id="notice", class="notice")
@@ -13,7 +13,7 @@
 h1= title
 p Welcome to #{title}, a simple little app to keep track of time spent working on something for someone.
 
-- if (username) {
+- if (username===user) {
 	form#items-form(action='/', method='post', onsubmit="fromForm(); return false;")
 		label(for='work[tags]') Tags, comma separated
 		//input(type='hidden', name='work[tID]', value=tID)
@@ -66,9 +66,9 @@ table(id="workdata")
 					td
 						- workData.tags.forEach(function(tag, i) {
 							- if (i<workData.tags.length-1) {
-								<a href="#{tag}">#{tag}</a>, 
+								<a href="#{user}/#{tag}">#{tag}</a>, 
 							- } else {
-								<a href="#{tag}">#{tag}</a>
+								<a href="#{user}/#{tag}">#{tag}</a>
 							- }
 						- })
 					

@@ -15,11 +15,11 @@ var Work = new Schema({
 	stop	: Date
 });
 
-mongoose.model('Work', Work)
+mongoose.model('karlherler', Work)
 // retrieve my model
-exports.WorkInstance = mongoose.model('Work');
+exports.WorkInstance = mongoose.model('karlherler');
 
-var WorkInstance = mongoose.model('Work');
+var WorkInstance = mongoose.model('karlherler');
 
 function timeStr(time) {
 	var timeStr = "";
@@ -43,6 +43,10 @@ function isEqual(d1, d2) {
 }
 
 function loadData(req, res, next) {
+	
+	mongoose.model(req.params.user, Work)
+	
+	WorkInstance = mongoose.model(req.params.user);
 	
 	/* Loads all data. */
 	var filter = {}
@@ -84,6 +88,10 @@ function loadUnfinished(req, res, next) {
 exports.loadUnfinished = loadUnfinished;
 
 function addData(req, res, next) {
+	
+	mongoose.model(req.params.user, Work)
+	
+	WorkInstance = mongoose.model(req.params.user);
 	
 	/* This code is rather messy to be honest */
 	

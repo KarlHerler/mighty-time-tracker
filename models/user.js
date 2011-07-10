@@ -1,9 +1,11 @@
 var session = require('./session.js')
 var mongoose = require('mongoose');
 var crypto = require('crypto');
-//data connection
 
-mongoose.connect('mongodb://localhost:27017/users');
+//data connection
+var db = (process.env.NODE_ENV==="development") ? "worktime_test" : "worktime";
+mongoose.connect("mongodb://localhost:27017/"+db);
+
 var Schema = mongoose.Schema;
 var	ObjectId = Schema.ObjectId;
 
@@ -18,6 +20,15 @@ var User = new Schema({
 mongoose.model('User', User)
 // retrieve my model
 exports.UserInstance = mongoose.model('User');
+
+var Work = new Schema({
+	tID 	: ObjectId,
+	tags 	: [],
+	done	: {type: Boolean, default: false},
+	start : {type: Date, 		default: Date.now },
+	stop	: Date
+});
+
 
 var UserInstance = mongoose.model('User');
 
@@ -110,6 +121,8 @@ function create(req, res, next) {
 			req.isCreated = true;
 		} 
 		console.log("saved")
+		
+		mongoose.model(req.body.user.name, Work)
 		next();
 	});
 }

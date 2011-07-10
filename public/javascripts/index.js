@@ -7,6 +7,8 @@ var time = {tID: 			"",
 						timeStr: 	""
 			 		 };
 
+var user = $(".user a").html();
+
 /* starter functions, should happen on load */	
 findUnfinished();
 //renderChart();
@@ -18,7 +20,7 @@ var workChart; // globally available
 function findUnfinished() {
 	//checks if any unfinished 
 	if ($(".ongoing td").length>0 && $("#notice").html()!=null) {
-		$.get('/work/unfinished', function(res) {
+		$.get('/work/'+user+'/unfinished', function(res) {
 			//gets time elapsed
 			var start = new Date(res[0].workData.start)
 			var now = new Date();
@@ -170,7 +172,7 @@ function startTime(elapsed, tags) {
 		counter = setInterval(updateTime, 1000);
 	}
 	if (!elapsed) {
-		$.post('/work', time, function(data) {
+		$.post('/work/'+user, time, function(data) {
 			time = data[0];
 		});
 	}
@@ -184,7 +186,7 @@ $("#done").click(function() {
 		$("#notice").hide();
 	});
 	
-	$.post('/work', time, function(data) {
+	$.post('/work/'+user, time, function(data) {
 		var d = data[1];
 		var addedWorks = "<tr>";
 				//var start  = new Date(d[i].workData.start);
@@ -192,7 +194,7 @@ $("#done").click(function() {
 				addedWorks = addedWorks+"<td>"+start.toLocaleDateString()+"</td><td>";
 		var tags = data[0].tags;
 			for (i=0; i<tags.length;i++) {
-				addedWorks = addedWorks+"<a href='"+tags[i]+"'>"+tags[i]+"</a>";
+				addedWorks = addedWorks+"<a href='"+user+"/"+tags[i]+"'>"+tags[i]+"</a>";
 			}
 			addedWorks = addedWorks+"</td><td>"+data[0].timeStr+"</td>";
 			addedWorks = addedWorks + "</tr>";

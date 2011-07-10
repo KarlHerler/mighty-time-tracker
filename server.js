@@ -34,16 +34,17 @@ app.configure('production', function(){
 
 
 //Routes!
-app.get('/', work.loadData, function(req, res){
-		var uname = (req.session.user===undefined) ? "" : req.session.user.name;
-		res.render('index', {
-    	title: app.set('title'),
-			page: "index",
-			data: req.workDatas,
-			username: uname,
-			tracking: true
-  });
-});
+
+/* Semistatic */
+app.get("/", function(req, res) {
+	var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+	res.render('landing', {
+		title: app.set('title'),
+		page: '',
+		username: uname
+	});
+})
+
 app.post('/', work.addData, work.loadData, function(req, res) {
 	res.render('index', {
 		title:  app.set('title'),
@@ -52,12 +53,17 @@ app.post('/', work.addData, work.loadData, function(req, res) {
 		tracking: true
 	})
 });
-app.post('/work', work.addData, function(req, res) {
+
+/* */
+app.post('/work/:user', work.addData, function(req, res) {
 	if (!req.err) { res.send([req.body, req.newWorkDatas]); } else { res.send("Y U NO WORK?"); }
 });
-app.get('/work/unfinished', work.loadUnfinished, function(req, res) {
+app.get('/work/:user/unfinished', work.loadUnfinished, function(req, res) {
 	if (!req.err) { res.send(req.workDatas); } else { res.send("Y U NO WORK?!") }
 })
+
+
+/* User related RESTful Methods */
 app.get('/user/session', function(req, res) {
 	res.render('session', {
 		title: app.set('title'),
@@ -79,19 +85,38 @@ app.post('/user/validate/:parameter', user.validate, function(req, res) {
 
 app.post('/session', user.signIn, function(req, res) {
 	if (req.signedIn) { 
-		res.redirect('/')
+		res.redirect('/'+req.session.user.name)
 	} else { res.send("FUCK YOU, TRYING TO HACK MY SHIT ARE WE?!")}
 });
 
 app.get('/favicon.ico', function(req, res){ res.send("") });
-app.get('/:tag', work.loadData, function(req, res) {
-	var uname = (req.session) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+app.get('/stylesheets/:file', function (req, res) {
+	res.download(__dirname + '/public/stylesheets/'+req.params.file)
+});
+app.get('/javascripts/:file', function (req, res) {
+	res.download(__dirname + '/public/javascripts/'+req.params.file)
+});
+app.get('/:user', work.loadData, function(req, res){
+		console.log(req.session)
+		var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+		res.render('index', {
+    	title: app.set('title'),
+			page: "index",
+			data: req.workDatas,
+			username: uname,
+			tracking: true,
+			user: req.params.user
+  });
+});
+app.get('/:user/:tag', work.loadData, function(req, res) {
+	var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
 	res.render('index', {
 		title: req.params.tag,
 		page: "index",
 		data: req.workDatas,
 		username: uname,
-		tracking: true
+		tracking: true,
+		user: req.params.user
 	})
 });
 

@@ -1,0 +1,10 @@
+- if (username) {
+	div.user Hi, <a href="#">#{username}</a>.
+- } else {
+	div.user
+		a(href="/user/session") Log in
+		#{" "}/
+		a(href="/user/create") Create user
+- }
+h1= title
+p Welcome to #{title}, a simple little app to keep track of time spent working on something for someone, or working out, or anything you might want to track. <br /> You might want to Create your own user up in the upper right corner, it's free or take a look at <a href="/karlherler">a demo page</a>.

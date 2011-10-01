@@ -13,4 +13,6 @@ html
 		script(src='/javascripts/libs/g.raphael-min.js')
 		script(src='/javascripts/libs/g.line-min.js')
 		script(src="/javascripts/scripts.js")
-		script(src="/javascripts/"+page+".js")
+		- if(page!=="") {
+			script(src="/javascripts/"+page+".js")	
+		- }

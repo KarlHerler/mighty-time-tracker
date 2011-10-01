@@ -52,6 +52,7 @@ function renderChart(times, labels) {
 	workChart = new Highcharts.Chart({
 		chart: {
 	  	renderTo: 'chart',
+	  	zoomType: 'x',
 	    defaultSeriesType: 'areaspline',
 			backgroundColor: 'none',
 			height: 270,

@@ -92,4 +92,4 @@ function renderChart(times, labels) {
 			}
 		}
 	});
-}
+}00;

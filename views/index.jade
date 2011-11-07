@@ -29,7 +29,7 @@ br
 	- data.forEach(function(item) {
 		- if (item.workData.done) {
 			- sum += item.workData.time/3600000;
-			- if (item.workData.start.getMonth()===(function () { var d = new Date(); return d.getMonth()-1; })()) {
+			- if (item.workData.start.getMonth()===(function () { var d = new Date(); return d.getMonth(); })()) {
 				- monthSum += item.workData.time/3600000;
 			- }
 		- }

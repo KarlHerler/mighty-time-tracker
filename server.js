@@ -37,12 +37,30 @@ app.configure('production', function(){
 
 /* Semistatic */
 app.get("/", function(req, res) {
-	var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
-	res.render('landing', {
-		title: app.set('title'),
-		page: '',
-		username: uname
-	});
+	var auth = req.headers['authorization']
+
+	if(!auth) {
+		res.statusCode = 401;
+		res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
+		res.end("<html><body>I'm afraid I can let you do that</body></html>");
+	} else if(auth) {
+		var tmp = auth.split(' ');
+		var buff = new Buffer(tmp[1], 'base64');
+		var plain_auth = buf.toString();
+		if (plain_auth.split(':')[0]=="hej" && plain_auth.split(':')[1]=="padig") {
+			var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+			res.render('landing', {
+				title: app.set('title'),
+				page: '',
+				username: uname
+			});	
+		} else {
+			res.statusCode = 401;
+			res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
+			res.end("<html><body>I'm afraid I can let you do that</body></html>");
+		}
+	}
+	
 })
 
 app.post('/', work.addData, work.loadData, function(req, res) {

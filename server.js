@@ -37,30 +37,12 @@ app.configure('production', function(){
 
 /* Semistatic */
 app.get("/", function(req, res) {
-	var auth = req.headers['authorization']
-
-	if(!auth) {
-		res.statusCode = 401;
-		res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
-		res.end("<html><body>I'm afraid I can let you do that</body></html>");
-	} else if(auth) {
-		var tmp = auth.split(' ');
-		var buff = new Buffer(tmp[1], 'base64');
-		var plain_auth = buf.toString();
-		if (plain_auth.split(':')[0]=="hej" && plain_auth.split(':')[1]=="padig") {
-			var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
-			res.render('landing', {
-				title: app.set('title'),
-				page: '',
-				username: uname
-			});	
-		} else {
-			res.statusCode = 401;
-			res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
-			res.end("<html><body>I'm afraid I can let you do that</body></html>");
-		}
-	}
-	
+	var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
+	res.render('landing', {
+		title: app.set('title'),
+		page: '',
+		username: uname
+	});	
 })
 
 app.post('/', work.addData, work.loadData, function(req, res) {
@@ -115,6 +97,18 @@ app.get('/javascripts/:file', function (req, res) {
 	res.download(__dirname + '/public/javascripts/'+req.params.file)
 });
 app.get('/:user', work.loadData, function(req, res){
+	var auth = req.headers['authorization']
+
+	if(!auth) {
+		res.statusCode = 401;
+		res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
+		res.end("<html><body>I'm afraid I can let you do that</body></html>");
+	} else if(auth) {
+		var tmp = auth.split(' ');
+		var buff = new Buffer(tmp[1], 'base64');
+		var plain_auth = buf.toString();
+		if (plain_auth.split(':')[0]=="hej" && plain_auth.split(':')[1]=="padig") {
+
 		console.log(req.session)
 		var uname = (req.session!==undefined) ? (req.session.user===undefined) ? "" : req.session.user.name : "";
 		res.render('index', {
@@ -124,6 +118,12 @@ app.get('/:user', work.loadData, function(req, res){
 			username: uname,
 			tracking: true,
 			user: req.params.user
+		}
+	} else {
+		res.statusCode = 401;
+		res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"');
+		res.end("<html><body>I'm afraid I can let you do that</body></html>");
+	}
   });
 });
 app.get('/:user/:tag', work.loadData, function(req, res) {
